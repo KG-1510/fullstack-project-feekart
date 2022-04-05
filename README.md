@@ -7,7 +7,7 @@ SRM Feekart Clone 💵
 </h1>
 
 <p align="center">
-crafted with <span style="color: #8b0000;">&hearts;</span> by Kushagra Gupta
+crafted with <span style="color: #8b0000;">&hearts;</span> by Kushagra Gupta, Priyanka Srinivasan, Ajay Sathish and Shorya Rawat
 </p>
 
 <h2 align="center">Built using: </h2>
@@ -18,7 +18,7 @@ crafted with <span style="color: #8b0000;">&hearts;</span> by Kushagra Gupta
 </p>
 
 ## View Deployed Site 🚀
-<p>Click https://srm-feekart.netlify.app to view the deployed site</p>
+<p>Click https://srm-feekart.netlify.app to view the deployed site!</p>
 
 ## Preview 📺
 
