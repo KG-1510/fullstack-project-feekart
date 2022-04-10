@@ -18,7 +18,7 @@ crafted with <span style="color: #8b0000;">&hearts;</span> by Kushagra Gupta, Pr
 </p>
 
 ## View Deployed Site 🚀
-<p>Click https://srm-feekart.netlify.app to view the deployed site!</p>
+<p>Click https://feekart.netlify.app/ to view the deployed site!</p>
 
 ## Preview 📺
 
