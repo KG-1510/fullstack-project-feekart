@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 
-import { Link } from "react-router-dom";
-import { useState } from "react";
 import { pendingTransactionsData } from "../../utils/dummy/pendingTransactions";
 import { SidebarComponent, NavbarComponent } from "../shared/index.js";
 import { ProfileCardComponent } from ".";

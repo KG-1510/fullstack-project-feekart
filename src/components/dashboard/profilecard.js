@@ -1,5 +1,3 @@
-import { latestTransactionsData } from "../../utils/dummy/latestTransactions";
-
 /* eslint-disable jsx-a11y/anchor-is-valid */
 export default function ProfileCard() {
   return (
