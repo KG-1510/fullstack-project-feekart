@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { sidebarOpen } from "../../utils/store";
 
 export default function Navbar() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sbOpen, setSbOpen] = useRecoilState(sidebarOpen);
+
   return (
     <>
       <nav className="bg-white border-b border-gray-200 fixed z-30 w-full">
@@ -12,7 +14,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
+                onClick={() => setSbOpen(!sbOpen)}
                 aria-expanded="true"
                 aria-controls="sidebar"
                 className="lg:hidden mr-2 text-gray-600 hover:text-gray-900 cursor-pointer p-2 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 rounded"

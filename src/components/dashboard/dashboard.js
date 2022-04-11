@@ -29,14 +29,6 @@ export default function Dashboard() {
                         This is a list of all the pending transactions
                       </span>
                     </div>
-                    <div className="flex-shrink-0">
-                      <a
-                        href="#"
-                        className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2"
-                      >
-                        View all
-                      </a>
-                    </div>
                   </div>
                   <div className="my-2">
                     <div className="overflow-x-auto rounded-lg">
