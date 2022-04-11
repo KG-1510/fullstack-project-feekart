@@ -5,10 +5,10 @@ export default function ProfileComponent() {
     <>
       <NavbarComponent />
       <SidebarComponent />
-      <div className="flex overflow-hidden bg-white pt-16">
+      <div className="flex overflow-hidden pt-16">
         <div
           id="main-content"
-          className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64"
+          className="h-full p-4 my-2 w-full bg-gray-50 relative overflow-y-auto lg:ml-64"
         >
           <main>
             <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
