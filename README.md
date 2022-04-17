@@ -7,7 +7,7 @@ SRM Feekart Clone 💵
 </h1>
 
 <p align="center">
-crafted with <span style="color: #8b0000;">&hearts;</span> by Kushagra Gupta, Priyanka Srinivasan, Ajay Sathish and Shorya Rawat
+crafted with <span style="color: #8b0000;">&hearts;</span> by Kushagra Gupta, Priyanka Srinivasan, Ajay Satish and Shorya Rawat
 </p>
 
 <h2 align="center">Built using: </h2>
