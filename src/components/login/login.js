@@ -26,7 +26,6 @@ export default function Login() {
       console.log(_res);
       if (values.captcha === captchaCode) {
         if (_res?.data?.status) {
-          // setIsAuth(true);
           delete values.captcha;
           setCookie('isAuth', values.email, { path: '/' });
           successHandler("Login successful!");

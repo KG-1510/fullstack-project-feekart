@@ -9,7 +9,34 @@ export const postLogin = async (values) => {
       url: `${baseUrl}/Login`,
       data: values,
     });
-    // setCookie(null, "authToken", _res.data.authToken);
+    return _res;
+  } catch (err) {
+    errorHandler(err);
+    return false;
+  }
+};
+
+export const postRegister = async (values) => {
+  try {
+    const _res = await axios({
+      method: "POST",
+      url: `${baseUrl}/Register`,
+      data: values,
+    });
+    return _res;
+  } catch (err) {
+    errorHandler(err);
+    return false;
+  }
+};
+
+export const getUserProfile = async (values) => {
+  try {
+    const _res = await axios({
+      method: "POST",
+      url: `${baseUrl}/userprofile`,
+      data: values,
+    });
     return _res;
   } catch (err) {
     errorHandler(err);

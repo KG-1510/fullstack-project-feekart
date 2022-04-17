@@ -1,11 +1,66 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
+import React from "react";
 import { pendingTransactionsData } from "../../utils/dummy/pendingTransactions";
 import { SidebarComponent, NavbarComponent } from "../shared/index.js";
 import { ProfileCardComponent } from ".";
 
-/* eslint-disable jsx-a11y/anchor-is-valid */
+const KEY_ID = process.env.REACT_APP_RAZORPAY_KEY_ID;
+
+function loadScript(src) {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+}
+
+async function displayRazorpay() {
+  const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+
+  if (!res) {
+    alert("Error loading Razorpay SDK! Please try again later!");
+    return;
+  }
+  
+  const options = {
+    key: KEY_ID, // Enter the Key ID generated from the Dashboard
+    amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    currency: "INR",
+    name: "Feekart SRM",
+    description: "Fee Payment for SRMIST",
+    image:
+      "https://vectorlogoseek.com/wp-content/uploads/2019/03/srm-institute-of-science-and-technology-vector-logo.png",
+    order_id: "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    handler: function (response) {
+      alert(response.razorpay_payment_id);
+      alert(response.razorpay_order_id);
+      alert(response.razorpay_signature);
+    },
+    prefill: {
+      name: "Gaurav Kumar",
+      email: "gaurav.kumar@example.com",
+    },
+    notes: {
+      address: "SRMIST, Chennai",
+    },
+    theme: {
+      color: "#3399cc",
+    },
+  };
+  console.log(options);
+  const paymentObject = new window.Razorpay(options);
+  paymentObject.open();
+}
+
 export default function Dashboard() {
   return (
     <>
@@ -99,7 +154,10 @@ export default function Dashboard() {
                                     </td>
                                     <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                                       {item.status === "pending" ? (
-                                        <button className="bg-green-500 text-white font-semibold p-2 rounded-md">
+                                        <button
+                                          onClick={() => displayRazorpay()}
+                                          className="bg-green-500 text-white font-semibold p-2 rounded-md"
+                                        >
                                           Pay Now
                                         </button>
                                       ) : item.status === "paid" ? (
