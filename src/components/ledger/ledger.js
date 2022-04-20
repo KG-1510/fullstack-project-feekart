@@ -1,8 +1,34 @@
-import { latestTransactionsData } from "../../utils/dummy/latestTransactions";
-import { SidebarComponent, NavbarComponent } from "../shared/index.js";
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+
+import moment from "moment";
+import { SidebarComponent, NavbarComponent } from "../shared/index.js";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { getLedgerTransactions } from "../../utils/api";
+import { errorHandler } from "../../utils/toastify";
+import LoadingAnimation from "../loader/loader";
+
 export default function LedgerComponent() {
+  const [cookies, setCookie] = useCookies(["isAuth"]);
+  const [ledgerData, setLedgerData] = useState();
+  const values = {
+    email: cookies.isAuth,
+  };
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const _res = await getLedgerTransactions(values);
+        console.log(_res);
+        setLedgerData(_res.data.data);
+      } catch (err) {
+        errorHandler("An error occured while fetching data!");
+      }
+    })();
+  }, []);
+
   return (
     <>
       <NavbarComponent />
@@ -51,35 +77,26 @@ export default function LedgerComponent() {
                               >
                                 Amount
                               </th>
-                              <th
-                                scope="col"
-                                className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                Action
-                              </th>
                             </tr>
                           </thead>
                           <tbody className="bg-white">
-                            {latestTransactionsData.map((item) => {
+                            {/* {ledgerData.map((item) => {
                               return (
                                 <tr>
                                   <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                    {item.transaction}
+                                    {item.txn_name}
                                   </td>
                                   <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                    {item.paid_on}
+                                    {moment(item.dates.paid).format(
+                                      "MMM Do YYYY"
+                                    )}
                                   </td>
                                   <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                    {item.amount}
-                                  </td>
-                                  <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                    <button className="bg-green-500 text-white font-semibold p-2 rounded-md">
-                                      View Details
-                                    </button>
+                                    ₹{item.amount}
                                   </td>
                                 </tr>
                               );
-                            })}
+                            })} */}
                           </tbody>
                         </table>
                       </div>

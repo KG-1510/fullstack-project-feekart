@@ -1,67 +1,132 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import React from "react";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import { useCookies } from "react-cookie";
 import { pendingTransactionsData } from "../../utils/dummy/pendingTransactions";
 import { SidebarComponent, NavbarComponent } from "../shared/index.js";
+import { getRzpOrderId } from "../../utils/api";
 import { ProfileCardComponent } from ".";
-
-const KEY_ID = process.env.REACT_APP_RAZORPAY_KEY_ID;
-
-function loadScript(src) {
-  return new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = src;
-    script.onload = () => {
-      resolve(true);
-    };
-    script.onerror = () => {
-      resolve(false);
-    };
-    document.body.appendChild(script);
-  });
-}
-
-async function displayRazorpay() {
-  const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
-
-  if (!res) {
-    alert("Error loading Razorpay SDK! Please try again later!");
-    return;
-  }
-  
-  const options = {
-    key: KEY_ID, // Enter the Key ID generated from the Dashboard
-    amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    currency: "INR",
-    name: "Feekart SRM",
-    description: "Fee Payment for SRMIST",
-    image:
-      "https://vectorlogoseek.com/wp-content/uploads/2019/03/srm-institute-of-science-and-technology-vector-logo.png",
-    order_id: "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    handler: function (response) {
-      alert(response.razorpay_payment_id);
-      alert(response.razorpay_order_id);
-      alert(response.razorpay_signature);
-    },
-    prefill: {
-      name: "Gaurav Kumar",
-      email: "gaurav.kumar@example.com",
-    },
-    notes: {
-      address: "SRMIST, Chennai",
-    },
-    theme: {
-      color: "#3399cc",
-    },
-  };
-  console.log(options);
-  const paymentObject = new window.Razorpay(options);
-  paymentObject.open();
-}
+import { getUserProfile } from "../../utils/api";
+import { errorHandler, successHandler } from "../../utils/toastify";
 
 export default function Dashboard() {
+  const [cookies, setCookie] = useCookies(["isAuth"]);
+  const [userData, setUserData] = useState();
+  const values = {
+    email: cookies.isAuth,
+  };
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const _res = await getUserProfile(values);
+        setUserData(_res.data.data);
+      } catch (err) {
+        errorHandler("An error occured while fetching data!");
+      }
+    })();
+  }, []);
+
+  const updateDashboard = () => {
+    (async function () {
+      try {
+        const _res = await getUserProfile(values);
+        setUserData(_res.data.data);
+      } catch (err) {
+        errorHandler("An error occured while fetching data!");
+      }
+    })();
+  };
+
+  const KEY_ID = process.env.REACT_APP_RAZORPAY_KEY_ID;
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  }
+
+  async function displayRazorpay(item, e) {
+    console.log("Transaction selected: ", item);
+
+    (async function () {
+      let amt;
+      if (e) {
+        amt = Number(item.amount.substring(1)) + 1000;
+      } else {
+        amt = Number(item.amount.substring(1));
+      }
+      console.log("Amount to pay", amt);
+      const _values = {
+        txn_name: item.transaction,
+        amount: amt,
+        email: userData.email,
+        txn_id: item.id,
+      };
+      console.log(_values);
+      try {
+        const _res = await getRzpOrderId(_values);
+        console.log(_res);
+        if (_res) {
+          const res = await loadScript(
+            "https://checkout.razorpay.com/v1/checkout.js"
+          );
+
+          if (!res) {
+            alert("Error loading Razorpay SDK! Please try again later!");
+            return;
+          }
+
+          const options = {
+            key: KEY_ID, // Enter the Key ID generated from the Dashboard
+            amount: _res?.data?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            currency: "INR",
+            name: "Feekart SRM",
+            description: "Fee Payment for SRMIST",
+            image:
+              "https://vectorlogoseek.com/wp-content/uploads/2019/03/srm-institute-of-science-and-technology-vector-logo.png",
+            order_id: _res?.data?.id, //Pass the `id` obtained in the response of Step 1
+            handler: function (response) {
+              successHandler("Payment Successful!");
+              updateDashboard();
+              console.log(response.razorpay_payment_id);
+              console.log(response.razorpay_order_id);
+              console.log(response.razorpay_signature);
+            },
+            prefill: {
+              name: userData.name,
+              email: userData.email,
+            },
+            notes: {
+              address: "SRMIST, Chennai",
+            },
+            theme: {
+              color: "#3399cc",
+            },
+          };
+          console.log(options);
+          const paymentObject = new window.Razorpay(options);
+          paymentObject.open();
+        }
+      } catch (err) {
+        errorHandler("An error occured while fetching data!");
+      }
+    })();
+  }
+
   return (
     <>
       <NavbarComponent />
@@ -126,46 +191,63 @@ export default function Dashboard() {
                             </thead>
                             <tbody className="bg-white">
                               {pendingTransactionsData.map((item) => {
+                                console.log(
+                                  "time",
+                                  moment().diff(item.due_date, "minutes")
+                                );
                                 return (
-                                  <tr>
+                                  <tr key={item.id}>
                                     <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
                                       {item.transaction}
                                     </td>
                                     <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                      {item.due_date}
+                                      {moment(item.due_date).format(
+                                        "MMM Do YYYY"
+                                      )}
                                     </td>
                                     <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                                       {item.amount}
                                     </td>
                                     <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                      {item.status === "pending" ? (
-                                        <span className="text-yellow-600 p-1 rounded-full bg-yellow-100">
-                                          Pending
-                                        </span>
-                                      ) : item.status === "paid" ? (
-                                        <span className="text-green-600 p-1 rounded-full bg-green-100">
+                                      {userData?.paid_txn?.includes(item.id) ? (
+                                        <div className="text-green-600 p-2 rounded-full bg-green-100 w-full text-center">
                                           Paid
-                                        </span>
+                                        </div>
+                                      ) : moment().diff(
+                                          item.due_date,
+                                          "minutes"
+                                        ) < 0 ? (
+                                        <div className="text-yellow-600 p-2 rounded-full bg-yellow-100 w-full text-center">
+                                          Pending
+                                        </div>
                                       ) : (
-                                        <span className="text-red-600 p-1 rounded-full bg-red-100">
+                                        <div className="text-red-600 p-2 rounded-full bg-red-100 w-full text-center">
                                           Overdue
-                                        </span>
+                                        </div>
                                       )}
                                     </td>
                                     <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                      {item.status === "pending" ? (
+                                      {userData?.paid_txn?.includes(item.id) ? (
+                                        <div className="text-green-600 p-2 rounded-full bg-green-100 w-full text-center">
+                                          ✅ Paid
+                                        </div>
+                                      ) : moment().diff(
+                                          item.due_date,
+                                          "minutes"
+                                        ) < 0 ? (
                                         <button
-                                          onClick={() => displayRazorpay()}
-                                          className="bg-green-500 text-white font-semibold p-2 rounded-md"
+                                          onClick={() => displayRazorpay(item)}
+                                          className="bg-green-500 text-white font-semibold p-2 rounded-md w-full"
                                         >
                                           Pay Now
                                         </button>
-                                      ) : item.status === "paid" ? (
-                                        <span className="text-green-600 px-2 py-1 rounded-full bg-green-100">
-                                          ✅ Paid
-                                        </span>
                                       ) : (
-                                        <button className="bg-yellow-500 text-white font-semibold p-2 rounded-md">
+                                        <button
+                                          onClick={(e) =>
+                                            displayRazorpay(item, e)
+                                          }
+                                          className="bg-yellow-500 text-white font-semibold p-2 rounded-md w-full"
+                                        >
                                           Pay with Penalty
                                         </button>
                                       )}

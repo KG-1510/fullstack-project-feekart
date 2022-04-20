@@ -43,3 +43,31 @@ export const getUserProfile = async (values) => {
     return false;
   }
 };
+
+export const getRzpOrderId = async (values) => {
+  try {
+    const _res = await axios({
+      method: "POST",
+      url: `${baseUrl}/transaction/rzpOrderId`,
+      data: values,
+    });
+    return _res;
+  } catch (err) {
+    errorHandler(err);
+    return false;
+  }
+};
+
+export const getLedgerTransactions = async (values) => {
+  try {
+    const _res = await axios({
+      method: "POST",
+      url: `${baseUrl}/transaction/ledger`,
+      data: values,
+    });
+    return _res;
+  } catch (err) {
+    errorHandler(err);
+    return false;
+  }
+};

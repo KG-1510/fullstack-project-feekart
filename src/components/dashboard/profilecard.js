@@ -19,8 +19,8 @@ export default function ProfileCard() {
     (async function () {
       try {
         const _res = await getUserProfile(values);
-        console.log(_res);
         setUserData(_res.data.data);
+        console.log("userdata",_res)
       } catch (err) {
         errorHandler("An error occured while fetching data!");
       }
@@ -34,7 +34,7 @@ export default function ProfileCard() {
         {userData ? (
           <>
             <img
-              className="w-36 h-36 rounded-full mx-auto"
+              className="w-36 h-36 rounded-full mx-auto mt-12 mb-2"
               src={
                 userData.image
                   ? userData.image
