@@ -1,6 +1,31 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
+import { getUserProfile } from "../../utils/api";
 import { NavbarComponent, SidebarComponent } from "../shared";
+import { useCookies } from "react-cookie";
+import { errorHandler } from "../../utils/toastify";
+import LoadingAnimation from "../loader/loader";
 
 export default function ProfileComponent() {
+  const [cookies, setCookie] = useCookies(["isAuth"]);
+  const [userData, setUserData] = useState();
+  const values = {
+    email: cookies.isAuth,
+  };
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const _res = await getUserProfile(values);
+        setUserData(_res.data.data);
+        console.log("userdata", _res);
+      } catch (err) {
+        errorHandler("An error occured while fetching data!");
+      }
+    })();
+  }, []);
+
   return (
     <>
       <NavbarComponent />
@@ -18,16 +43,29 @@ export default function ProfileComponent() {
               <div className="flex flex-col lg:flex-row my-5">
                 <img
                   className="w-36 h-36 rounded-full mx-auto lg:mx-0"
-                  src="https://media-exp1.licdn.com/dms/image/C5603AQElOHX5fWfC1w/profile-displayphoto-shrink_400_400/0/1645607283072?e=1655337600&v=beta&t=2HAQOOrx8vw8JjfwPRJLnmtCZxECxRPTZRawO6JTOLM"
+                  src={
+                    userData?.image
+                      ? userData?.image
+                      : "https://www.pngitem.com/pimgs/m/421-4212617_person-placeholder-image-transparent-hd-png-download.png"
+                  }
                   alt="profile-pic"
                 />
-                <div className="mx-10">
-                  <p className="text-lg font-bold my-3">Name: Kushagra Gupta</p>
-                  <p my-3>Branch: B.tech CSE</p>
-                  <p my-3>Specialization: AIML</p>
-                  <p my-3>Email ID: kg8147@srmist.edu.in</p>
-                  <p className="italic text-sm my-10">(In case of any data change, please contact ITKM department)</p>
-                </div>
+                {userData ? (
+                  <div className="mx-10">
+                    <p className="text-lg font-bold my-3">
+                      Name: {userData?.name}
+                    </p>
+                    <p className="my-3">Branch: {userData?.branch}</p>
+                    <p className="my-3">Specialization: {userData?.spl}</p>
+                    <p className="my-3">Email ID: {userData?.email}</p>
+                    <p className="italic text-sm my-10">
+                      (In case of any data change, please contact ITKM
+                      department)
+                    </p>
+                  </div>
+                ) : (
+                  <LoadingAnimation className="h-8" color={"#000"} />
+                )}
               </div>
             </div>
           </main>

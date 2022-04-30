@@ -86,11 +86,7 @@ export default function LedgerComponent() {
                             </tr>
                           </thead>
                           <tbody className="bg-white">
-                            {!ledgerData?.length ? (
-                              <>
-                                <h1 className="mt-10 mx-auto">No transactions found!</h1>
-                              </>
-                            ) : (
+                            {ledgerData ? (
                               ledgerData.map((item) => {
                                 return (
                                   <tr>
@@ -111,6 +107,15 @@ export default function LedgerComponent() {
                                   </tr>
                                 );
                               })
+                            ) : ledgerData?.length === 0 ? (
+                              <p className="my-4">
+                                No Transactions
+                              </p>
+                            ) : (
+                              <LoadingAnimation
+                                className="h-10"
+                                color={"#000"}
+                              />
                             )}
                           </tbody>
                         </table>
