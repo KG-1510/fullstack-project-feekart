@@ -44,14 +44,11 @@ export default function ProfileCard() {
             />
             <div className="text-center my-4">
               <p className="text-lg font-bold">{userData.name}</p>
-              <p>
-                {userData.branch} {userData.spl}, Year {userData.year}
-              </p>
               <p className="italic my-2 text-gray-400">{userData.email}</p>
               <Link to="/profile">
                 <a>
                   <button className="bg-blue-500 hover:opacity-90 text-white px-5 py-2 rounded-md my-10">
-                    Edit Profile
+                    View Profile
                   </button>
                 </a>
               </Link>
