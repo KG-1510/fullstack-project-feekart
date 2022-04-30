@@ -63,6 +63,12 @@ export default function LedgerComponent() {
                                 scope="col"
                                 className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                               >
+                                Receipt ID
+                              </th>
+                              <th
+                                scope="col"
+                                className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
                                 Transaction
                               </th>
                               <th
@@ -80,23 +86,32 @@ export default function LedgerComponent() {
                             </tr>
                           </thead>
                           <tbody className="bg-white">
-                            {/* {ledgerData.map((item) => {
-                              return (
-                                <tr>
-                                  <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                    {item.txn_name}
-                                  </td>
-                                  <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                    {moment(item.dates.paid).format(
-                                      "MMM Do YYYY"
-                                    )}
-                                  </td>
-                                  <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                    ₹{item.amount}
-                                  </td>
-                                </tr>
-                              );
-                            })} */}
+                            {!ledgerData?.length ? (
+                              <>
+                                <h1 className="mt-10 mx-auto">No transactions found!</h1>
+                              </>
+                            ) : (
+                              ledgerData.map((item) => {
+                                return (
+                                  <tr>
+                                    <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
+                                      {item.receipt}
+                                    </td>
+                                    <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
+                                      {item.txn_name}
+                                    </td>
+                                    <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
+                                      {moment(item.dates.paid).format(
+                                        "MMM Do YYYY"
+                                      )}
+                                    </td>
+                                    <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                                      ₹{item.amount}
+                                    </td>
+                                  </tr>
+                                );
+                              })
+                            )}
                           </tbody>
                         </table>
                       </div>

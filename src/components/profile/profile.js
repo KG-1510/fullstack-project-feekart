@@ -26,14 +26,8 @@ export default function ProfileComponent() {
                   <p my-3>Branch: B.tech CSE</p>
                   <p my-3>Specialization: AIML</p>
                   <p my-3>Email ID: kg8147@srmist.edu.in</p>
-                  <p my-3>Password: **********</p>
+                  <p className="italic text-sm my-10">(In case of any data change, please contact ITKM department)</p>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-center">
-                <button className="bg-blue-500 hover:opacity-90 text-white px-5 py-2 rounded-md my-10 ">
-                  Save Changes
-                </button>
               </div>
             </div>
           </main>
