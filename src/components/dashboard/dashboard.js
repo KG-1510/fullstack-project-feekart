@@ -100,11 +100,14 @@ export default function Dashboard() {
               "https://vectorlogoseek.com/wp-content/uploads/2019/03/srm-institute-of-science-and-technology-vector-logo.png",
             order_id: _res?.data?.id, //Pass the `id` obtained in the response of Step 1
             handler: function (response) {
-              successHandler("Payment Successful!");
-              updateDashboard();
-              console.log(response.razorpay_payment_id);
-              console.log(response.razorpay_order_id);
-              console.log(response.razorpay_signature);
+              if(response.razorpay_payment_id) {
+                console.log("Razorpay Response: ", response);
+                successHandler("Payment Successful!");
+                updateDashboard();
+              }
+              else {
+                errorHandler("Payment Failed!");
+              }
             },
             prefill: {
               name: userData.name,
