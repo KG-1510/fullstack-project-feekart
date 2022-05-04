@@ -23,11 +23,11 @@ crafted with <span style="color: #8b0000;">&hearts;</span> by Kushagra Gupta, Pr
 ## Preview 📺
 
 <div align="center">
-  <img alt="login-page" src="https://user-images.githubusercontent.com/60519359/153770399-5197c479-d9e9-4f56-9836-c1f7582fd1da.png" />
+  <img alt="login-page" src="https://user-images.githubusercontent.com/60519359/166749931-5829013c-63f1-466d-a84d-2acbcb8c6e5c.png" />
 </div>
 <br>
 <div align="center">
-  <img alt="home-page" src="https://user-images.githubusercontent.com/60519359/153770427-b94ba771-c34b-40d3-aebd-00836dc2116a.png" />
+  <img alt="home-page" src="https://user-images.githubusercontent.com/60519359/166750916-a4ed536e-68f0-4c52-ab84-6ad3887fc26c.png" />
 </div>
 
 ## Installation 🔧
