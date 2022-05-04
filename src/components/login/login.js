@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { postLogin } from "../../utils/api";
 import { Formik, Field, Form } from "formik";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 import { loginValidationSchema } from "../../utils/schema";
 import { errorHandler, successHandler } from "../../utils/toastify";
 import LoadingAnimation from "../loader/loader";
@@ -15,7 +15,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [captchaCode, setCaptchaCode] = useState();
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['isAuth']);
+  const [cookies, setCookie] = useCookies(["isAuth"]);
   const initialValues = {};
 
   const submitHandler = async (values) => {
@@ -27,7 +27,7 @@ export default function Login() {
       if (values.captcha === captchaCode) {
         if (_res?.data?.status) {
           delete values.captcha;
-          setCookie('isAuth', values.email, { path: '/' });
+          setCookie("isAuth", values.email, { path: "/" });
           successHandler("Login successful!");
           navigate("/dashboard");
         } else {
@@ -63,11 +63,7 @@ export default function Login() {
               <h1 className="my-2">SRM Feekart</h1>
             </div>
             <p className="mt-6 font-normal text-center text-white md:mt-0">
-              SRMIST students can login with their NetID Credentials
-            </p>
-            <p className="mt-6 text-sm text-center text-white">
-              (i.e If your mail id is abcd@srmist.edu.in, your NetID is abcd &
-              password will be e-mail password)
+              SRMIST students can login with their SRM Email ID and Password
             </p>
           </div>
           <div className="p-5 bg-white md:flex-1">
